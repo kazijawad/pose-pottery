@@ -9,7 +9,7 @@ class Pots(tfds.core.GeneratorBasedBuilder):
         return tfds.core.DatasetInfo(
             builder=self,
             features=tfds.features.FeaturesDict({
-                "image": tfds.features.Image(shape=(512, 512, 3)),
+                "image": tfds.features.Image(shape=(720, 1280, 4)),
             }),
             supervised_keys=None,
             disable_shuffling=True
@@ -24,5 +24,5 @@ class Pots(tfds.core.GeneratorBasedBuilder):
 
     def _generate_examples(self, path):
         """Yields examples."""
-        for p in path.glob("*.jpg"):
+        for p in path.glob("*.png"):
             yield p.name, {"image": p}
