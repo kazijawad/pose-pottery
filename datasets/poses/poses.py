@@ -24,5 +24,5 @@ class Poses(tfds.core.GeneratorBasedBuilder):
 
     def _generate_examples(self, path):
         """Yields examples."""
-        for p in path.glob("*.jpg"):
+        for p in path.glob("*.png"):
             yield p.name, {"image": p}
