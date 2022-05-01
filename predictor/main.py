@@ -1,6 +1,6 @@
 import base64
 from io import BytesIO
-from os.path import join
+from os.path import join, abspath, dirname
 
 from PIL import Image
 from flask import Flask, send_from_directory, request, jsonify
@@ -107,7 +107,7 @@ generator = Generator()
 
 
 checkpoint = tf.train.Checkpoint(generator=generator)
-checkpoint.restore(join("./checkpoints", "pix2pix", "ckpt-40"))
+checkpoint.restore(join(dirname(abspath(__file__)), "checkpoints", "pix2pix", "ckpt-40"))
 
 
 app = Flask(__name__)
