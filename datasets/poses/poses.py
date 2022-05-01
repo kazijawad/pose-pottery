@@ -8,9 +8,7 @@ class Poses(tfds.core.GeneratorBasedBuilder):
         """Returns the dataset metadata."""
         return tfds.core.DatasetInfo(
             builder=self,
-            features=tfds.features.FeaturesDict({
-                "image": tfds.features.Image(shape=(3840, 2160, 4)),
-            }),
+            features=tfds.features.FeaturesDict({"image": tfds.features.Image(shape=(3840, 2160, 4))}),
             supervised_keys=None,
             disable_shuffling=True
         )
