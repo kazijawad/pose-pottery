@@ -34,6 +34,8 @@ if (cluster.isMaster) {
     console.log(`Total CPUS: ${cpus}`);
     console.log(`Master ${process.pid} is running`);
 
+    let baseIndex = 0;
+
     let jsons = readdirSync(inputPath);
     let jsonIndex = 0;
 
@@ -45,13 +47,15 @@ if (cluster.isMaster) {
         worker = cluster.fork();
 
         if (jsonIndex < jsons.length && jsonIndex % 8 === 0) {
-            worker.send({ path: jsons[jsonIndex] });
+            worker.send({ path: jsons[jsonIndex], baseIndex });
+            baseIndex++;
             jsonIndex += 8;
         }
 
         worker.on('message', (message) => {
             if (message.success && jsonIndex < jsons.length && jsonIndex % 8 === 0) {
-                worker.send({ path: jsons[jsonIndex] });
+                worker.send({ path: jsons[jsonIndex], baseIndex });
+                baseIndex++;
                 jsonIndex += 8;
             }
         });
@@ -65,16 +69,16 @@ if (cluster.isMaster) {
 } else {
     console.log(`Worker ${process.pid} started`);
 
-    process.on('message', async (message) => {
-        if (message.path) {
-            console.log(`Rendering ${message.path}`);
-            await render(join(inputPath, message.path));
+    process.on('message', async ({ path, baseIndex }) => {
+        if (path && baseIndex) {
+            console.log(`Rendering ${baseIndex}: ${path}`);
+            await render(join(inputPath, path), baseIndex);
             process.send({ success: true });
         }
     });
 }
 
-async function render(path) {
+async function render(path, baseIndex) {
     try {
         if (path.includes('.DS_Store')) return;
 
@@ -110,7 +114,7 @@ async function render(path) {
 
                 await p.saveCanvas(
                     canvas,
-                    join(dirname(path), 'dist', `${parse(path).name}.jpg`),
+                    join(dirname(path), 'dist', `frame${baseIndex}.jpg`),
                     'jpg'
                 );
 
