@@ -1,4 +1,6 @@
-# Pose-Driven Pottery
+# Pushin 🅿️ots
+
+Pushin 🅿️ots is a live pose-to-pottery generator that turns people and posture into elegant, diverse still life portraits of ceramic ware.
 
 ## Getting Started
 
@@ -28,7 +30,7 @@ git clone https://github.com/kazijawad/pose-pottery.git
 # Python Packages
 conda create -n p-pottery python=3.8
 conda activate p-pottery
-pip install tensorflow tensorflow-datasets notebook matplotlib ipywidgets
+pip install tensorflow tensorflow-datasets notebook matplotlib ipywidgets flask
 ```
 
 3. Install each custom dataset inside the `datasets` folder:
