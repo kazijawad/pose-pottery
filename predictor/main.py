@@ -135,7 +135,7 @@ def classify():
     image = preprocess_image(image)
     image = image[tf.newaxis, ...]
 
-    image = generator(image, training=False)
+    image = generator(image, training=True)
 
     image = tf.squeeze(image)
     image = tf.keras.preprocessing.image.array_to_img(image)
