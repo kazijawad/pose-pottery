@@ -1,10 +1,10 @@
 <script>
     import { onDestroy } from 'svelte';
-    import { output } from 'store';
+    import { mask } from 'store';
 
     let photo;
 
-    const unsubscribe = output.subscribe((value) => {
+    const unsubscribe = mask.subscribe((value) => {
         if (value) {
             photo.setAttribute('src', value);
         }

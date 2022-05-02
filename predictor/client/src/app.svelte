@@ -1,10 +1,12 @@
 <script>
     import Poses from 'components/poses.svelte';
+    import Mask from 'components/mask.svelte';
     import Output from 'components/output.svelte';
 </script>
 
 <main>
     <Poses />
+    <Mask />
     <Output />
 </main>
 

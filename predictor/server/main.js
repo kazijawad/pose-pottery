@@ -49,7 +49,7 @@ const { createCanvas, Image } = require('canvas');
                 const input = tf.browser.fromPixels(canvas);
                 const pose = await net.estimateSinglePose(input);
 
-                await render(res, pose);
+                await render(res, pose, image.width, image.height);
             };
 
             image.src = req.body.image;
@@ -62,7 +62,7 @@ const { createCanvas, Image } = require('canvas');
         console.log(`Listening on http://localhost:${port}`);
     });
 
-    async function render(res, pose) {
+    async function render(res, pose, width, height) {
         function sketch(p) {
             p.setup = async () => {
                 const canvas = p.createCanvas(512, 512);
@@ -77,7 +77,7 @@ const { createCanvas, Image } = require('canvas');
                     const x = scale(
                         pose.keypoints[i].position.x,
                         0,
-                        1080,
+                        width,
                         0,
                         512
                     );
@@ -85,7 +85,7 @@ const { createCanvas, Image } = require('canvas');
                     const y = scale(
                         pose.keypoints[i].position.y,
                         0,
-                        1920,
+                        height,
                         0,
                         512
                     );

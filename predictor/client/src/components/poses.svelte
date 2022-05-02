@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { output } from 'store';
+    import { mask, output } from 'store';
 
     const poseColors = [[210, 105,  30],  // nose
                         [255, 127,  80],  // left eye
@@ -52,11 +52,18 @@
             canvas.setAttribute('height', height);
 
             streaming = true;
+
+            loop();
         }
     }
 
-    async function handleClick() {
+    function loop() {
+        render().then(() => requestAnimationFrame(loop));
+    }
+
+    async function render() {
         const context = canvas.getContext('2d');
+
         if (width && height) {
             canvas.width = width;
             canvas.height = height;
@@ -73,6 +80,8 @@
                 body: JSON.stringify({ image })
             });
             let data = await response.json();
+
+            mask.set(data.image);
 
             response = await fetch('/predict', {
                 method: 'POST',
@@ -95,7 +104,6 @@
         Video stream not available.
         <track kind="captions">
     </video>
-    <button on:click|preventDefault={handleClick}>Take Photo</button>
     <canvas bind:this={canvas}></canvas>
 </section>
 
@@ -105,27 +113,15 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        grid-column: 1 / 7;
+        grid-column: span 4;
         border: 0.1rem solid var(--c-black);
+    }
+
+    video {
+        transform: rotateY(180deg);
     }
 
     canvas {
         display: none;
-    }
-
-    button {
-        margin-top: 1rem;
-        padding: 1rem;
-        font-size: 2rem;
-        border: 0.1rem solid var(--c-black);
-        border-radius: 0.2rem;
-        background-color: var(--c-off-white);
-        color: var(--c-black);
-        transition: all 0.3s;
-    }
-
-    button:hover {
-        background-color: var(--c-black);
-        color: var(--c-white);
     }
 </style>

@@ -107,7 +107,7 @@ generator = Generator()
 
 
 checkpoint = tf.train.Checkpoint(generator=generator)
-checkpoint.restore(join(dirname(abspath(__file__)), "checkpoints", "pix2pix", "ckpt-40"))
+checkpoint.restore(join(dirname(abspath(__file__)), "checkpoints", "pix2pix", "ckpt-60"))
 
 
 app = Flask(__name__)
